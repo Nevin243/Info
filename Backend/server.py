@@ -10,14 +10,13 @@ def placeholder_get():
 
 @app.route('/placeholder_post', methods=['POST'])
 def placeholder_post():
-    return ml.classify(request.stream.read())
-
-@app.route('/placeholder_post_image', methods=['POST'])
-def placeholder_post_image():
-    return ml.classify_image(request.data)
+    model = ml.train()
+    val = ml.classify("Lovely stuff right now", model)
+    return val
 
 if __name__ == '__main__':
     app.run(debug=True)
+    print ml.classify("This is a very positive tweet, its great.",model)
 
 # Test the get - curl -X GET http://localhost:5000/placeholder_get
 # test the post curl -d "test" -X POST http://localhost:5000/placeholder_post
