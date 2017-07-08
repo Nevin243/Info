@@ -1,6 +1,12 @@
 from flask import Flask
 from flask import request
 import ml_application as ml
+from twitter import *
+
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 app = Flask(__name__)
 
@@ -8,10 +14,16 @@ app = Flask(__name__)
 def placeholder_get():
     return "Hello, World!"
 
-@app.route('/placeholder_post', methods=['POST'])
+@app.route('/predict_post', methods=['POST'])
 def placeholder_post():
     model = ml.train()
     val = ml.classify("Lovely stuff right now", model)
+    
+    t = Twitter(auth=OAuth("1198351688-gu8BpVlGkwqh30yWpcv9NQiA586PlLmxa4qG583", "CVuTVpCaVbXjJG36E3wwYEHDKvePrDERVh8EujzdEdERa", "sI2HgT4fNu6sdMgnWRr6jupBG", "41pDMQrMv4gDAHQpReB7W4GzpRngpiPdFqlMMQ7OJdBKQUX99k"))
+    json_out = t.statuses.user_timeline(screen_name="@KainosAcademy")
+
+    print(json_out)
+
     return val
 
 if __name__ == '__main__':
